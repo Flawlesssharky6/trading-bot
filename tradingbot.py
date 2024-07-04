@@ -7,8 +7,8 @@ from alpaca_trade_api import REST
 from timedelta import Timedelta
 from finbert_utils import estimate_sentiment # the machine learning model
 
-API_KEY = "PKFI2YEDDK32ILJ49DK2"
-API_SECRET = "NaPGvSelWmrwnNxTKvEYBVMTckMQzKN6lxIwUP57"
+API_KEY = "PKF91DRRDY0LJSDJZFC1"
+API_SECRET = "AqhYh8RJgehLjaCeJR9IFvcv2FLOWgTV4fE6p3cn"
 BASE_URL = "https://paper-api.alpaca.markets/v2"
 
 ALPACA_CREDS = {
@@ -48,24 +48,38 @@ class MLTrader(Strategy):
         
             
     def on_trading_iteration(self):
-        cash, last_price, quantity = self.position_sizing()
-        
-        if cash > last_price:
-            if self.last_trade == None:
-                probability, sentiment = self.get_sentiment()
-                print(probability, sentiment)
+        cash, last_price, quantity = self.position_sizing() 
+        probability, sentiment = self.get_sentiment()
+
+        if cash > last_price: 
+            if sentiment == "positive" and probability > .999: 
+                if self.last_trade == "sell": 
+                    self.sell_all() 
                 order = self.create_order(
-                    self.symbol,
-                    quantity,
-                    "buy",
-                    type="bracket",
-                    take_profit_price=last_price*1.20,
+                    self.symbol, 
+                    quantity, 
+                    "buy", 
+                    type="bracket", 
+                    take_profit_price=last_price*1.20, 
                     stop_loss_price=last_price*.95
                 )
-                self.submit_order(order)
+                self.submit_order(order) 
                 self.last_trade = "buy"
+            elif sentiment == "negative" and probability > .999: 
+                if self.last_trade == "buy": 
+                    self.sell_all() 
+                order = self.create_order(
+                    self.symbol, 
+                    quantity, 
+                    "sell", 
+                    type="bracket", 
+                    take_profit_price=last_price*.8, 
+                    stop_loss_price=last_price*1.05
+                )
+                self.submit_order(order) 
+                self.last_trade = "sell"
     
-start_date = datetime(2023,12,15)
+start_date = datetime(2020,1,1)
 end_date = datetime(2023,12,31)
 
 broker = Alpaca(ALPACA_CREDS)
