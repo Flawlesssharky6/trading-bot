@@ -7,8 +7,8 @@ from alpaca_trade_api import REST
 from timedelta import Timedelta
 from finbert_utils import estimate_sentiment # the machine learning model
 
-API_KEY = "PKF91DRRDY0LJSDJZFC1"
-API_SECRET = "AqhYh8RJgehLjaCeJR9IFvcv2FLOWgTV4fE6p3cn"
+API_KEY = "PK0Z7OFHYCECN28DT91L"
+API_SECRET = "wbPxNsTrcoHlRRKbP2cm3USeH1JThOcg4lwG6TNW"
 BASE_URL = "https://paper-api.alpaca.markets/v2"
 
 ALPACA_CREDS = {
@@ -29,7 +29,7 @@ class MLTrader(Strategy):
         cash = self.get_cash()
         last_price = self.get_last_price(self.symbol)
         # ex: cash_at_risk=.5 means use 50% of our remaining cash balance
-        quantity = round(cash * self.cash_at_risk / last_price, 0)
+        quantity = round(cash * self.cash_at_risk / last_price,0)
         return cash, last_price, quantity
     
     def get_dates(self):
@@ -83,10 +83,12 @@ start_date = datetime(2020,1,1)
 end_date = datetime(2023,12,31)
 
 broker = Alpaca(ALPACA_CREDS)
+
 strategy = MLTrader(name='Trading Bot', broker=broker, 
                     parameters={"symbol":"SPY",
                                 "cash_at_risk":.5 # higher number means more cash per trade
                                 })
+'''
 strategy.backtest(
     YahooDataBacktesting,
     start_date,
@@ -94,3 +96,13 @@ strategy.backtest(
     parameters={"symbol":"SPY",
                 "cash_at_risk":.5}
 )
+'''
+
+# Create a Trader instance
+trader = Trader()
+
+# Add the strategy to the trader
+trader.add_strategy(strategy)
+
+# Deploy the strategy for live trading
+trader.run_all()
