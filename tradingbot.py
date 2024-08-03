@@ -103,7 +103,7 @@ class MLTrader(Strategy):
             except Exception as e:
                 logger.error(f"Error in on_trading_iteration for {symbol}: {e}")
 
-start_date = datetime(2021, 1, 1)
+start_date = datetime(2020, 1, 1)
 end_date = datetime(2023, 12, 31)
 
 broker = Alpaca(ALPACA_CREDS)
