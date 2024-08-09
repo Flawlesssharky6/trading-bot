@@ -18,3 +18,13 @@ Using CUDA helps with running the program but isn't needed (instructions for ini
 
 Make sure alpaca account is set to the right mode (paper/live)
 
+
+## Modifications
+
+This project is based on MLTradingBot by Nick Renotte, which is licensed under the MIT License.
+
+The following modifications were made:
+- Added multi-symbol handling
+- Added extra check against day trading
+- minor formatting
+
