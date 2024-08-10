@@ -1,4 +1,4 @@
-Initalization: 
+## Instructions: 
 
 Create a virtual environment "conda create -n trader python=3.10"
 
@@ -26,5 +26,5 @@ This project is based on MLTradingBot by Nick Renotte, which is licensed under t
 The following modifications were made:
 - Added multi-symbol handling
 - Added extra check against day trading
-- minor formatting
+- Minor changes
 
